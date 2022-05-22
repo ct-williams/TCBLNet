@@ -22,7 +22,7 @@ npoints = 5; % number of wall normal points to train on
 randperm_flag = 1; % randomly permute the data to output
 
 %% Filter Parameters
-rus =4 ; %ratio of undersampling
+rus =8 ; %ratio of undersampling
 number_filters = 5;
 number_filters_us = 4;
 fil_size = 3.17;
@@ -214,6 +214,9 @@ Pr = 0.72;
 cp = 1005; % air
 % R = 8.314;
 % cp = gamma/(gamma-1)*R;
+
+%kappa
+kappa = mu/Pr*cp;
 
 % Ma_edge
 
@@ -435,7 +438,19 @@ if output_traning_data == 1
         h5writeatt(fname,'/','ordering for non-permuted dataset, (x,z): (1,1), (1,2), (1,3)... (2,1), (2,2)...', 1);
         h5writeatt(fname,'/','dx', dx);
         h5writeatt(fname,'/','dz', dz);
-        
+
+        % list of variables saved in order
+        h5writeatt(fname,'/',['VARIABLE ORDER: ','tau_wall, heatflux_wall, y(1:n), U(1:n), ',...
+                              'V(1:n), W(1:n), P(1:n), rho(1:n), T(1:n), ',...
+                              'soundspeed(1:n), mu(1:n), kappa(1:n), ',...
+                              'Re_y(1:n), (T-Tw)/(Te-Tw) (1:n), ',...
+                              'duidxj(1:n)[(1,1), (1,2), (1,3), (2,1),...,(3,3)], ',...
+                              'd2uidxjdxk(1:n)[(1,1,1),(1,2,2),(1,3,3),(1,2,1),(1,3,1),',...
+                              '(1,2,3),(2,1,1),...,(3,2,3)], ',...
+                              'dTdxi(1:n)[(1),(2),(3)], ',...
+                              'd2Tdxjdxk(1:n)[(1,1),(2,2),(3,3),(2,1),(3,1),(2,3)].']...
+                               , 0);
+                
 
         % Write some data
         h5create(fname,'/data',[mini_batch_size,ninputs+noutputs]);
