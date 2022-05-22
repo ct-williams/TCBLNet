@@ -7,14 +7,14 @@ clc
 %% File names
 source_file_name = '513,0,0-1024,257,447.hdf';
 % source_file_name = '513,0,0-1024,257,447.hdf';
-input_path = '../data_tar/fluid_iter0000120000/';
+input_path = '../../data_tar/fluid_iter0000120000/';
 
-filtered_out_path ='../data_filtered/';
+filtered_out_path ='../../data_filtered/';
 
 average_flag = 0; % is this an average hdf file?
 
 output_traning_data = 1; % do you want to output training data?
-training_out_path = '../training_data/';
+training_out_path = '../../training_data/';
 mini_batch_size = 256;
 xmin = 0.1; % fraction of domain length to ignore at start
 xmax = 0.9; % fraction of domain length after which to ignore at end
@@ -330,6 +330,9 @@ for j = 1:6
     h5write(fname_out, dataname, d2Tdxjdxk(:,:,:,j));
 end
 
+% Close the hdf5 file
+H5F.close(fileID) 
+
 
 % fileID = H5F.create(fname_out,'H5F_ACC_TRUNC','H5P_DEFAULT','H5P_DEFAULT');
 % type_id = H5T.array_create('H5T_ARRAY',3,[nx,ny,nz]);
@@ -341,15 +344,29 @@ disp('saved filtered field')
 
 %% Compute outputs
 
+% read the DNS data at undersampled location in 
+% x and z but not in y
+xyz_tmp = h5read(fname_in,'/centerCoordinates',[2,1,1], [1,nyg,1],[1,1,1]);
+% if average_flag ==1
+%     xyz_tmp(1,:,:) = repmat(xyz_tmp(1,:,end)',1,nyg);
+% end
+y_dns = squeeze(xyz_tmp(2,:));
+
+UVW = h5read(fname_in,'/velocity',[2,1,1], [nx,nyg,nz],[rus,1,rus]);
+U_usxz = squeeze(UVW(1,:,:,:));
+clear UVW;
+
+T_usxz = h5read(fname_in,'/temperature',[2,1,1], [nx,nyg,nz],[rus,1,rus]);
+
 % Shear stress
 % DNS shear stress at the undersampled locations
-mu_us = muref.*(T./Tref).^(3/2) .* (Tref + Sref)./(T + Sref);
-tau_wall = ComputeTauWall(U,mu_us,y);
+mu_usxz = muref.*(T_usxz./Tref).^(3/2) .* (Tref + Sref)./(T_usxz + Sref);
+tau_wall = ComputeTauWall(U_usxz,mu_usxz,y_dns);
 
 % Heat flux
 % DNS shear stress at the undersampled locations
-kappa = mu/Pr*cp;
-heatflux_wall = ComputeTauWall(-T,kappa,y);
+kappa_usxz = mu_usxz/Pr*cp;
+heatflux_wall = ComputeTauWall(-T_usxz,kappa_usxz,y_dns);
 
 disp('Computed outputs')
 
