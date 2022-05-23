@@ -18,21 +18,30 @@ noutputs = 2; %number of outputs used
 npoints = 5; % number of wall normal points used
     %-----
 
-output_path = '../../training_data/selection_1';
+output_path = '../../training_data/test_selection_1';
 
 % Cases to use
 % It is recursive, so it will enter all subdirectories
 % and find the batch files to use.
 %
 % these are the paths on top of the data_location path
-data_path_list{end+1} = 'M584_Re15e4_T025';
 
+%training?
+%data_path_list{end+1} = 'M584_Re15e4_T025';
+%data_path_list{end+1} = 'M5_Re1e4_T02';
+%data_path_list{end+1} = 'M5_Re2e4_T06';
+%data_path_list{end+1} = 'M7_Re2e4_T03';
+
+%test?
+data_path_list{end+1} = 'M7_Re15e4_T02';
+data_path_list{end+1} = 'M11_Re3e4_T03';
 
 
 
 
 %%======= Data Processing ===========%%
 %find all batches in all data_paths
+disp('Getting file list')
 filelist = [];
 for i = 1:length(data_path_list)
     % find all batch files in this path and all sub paths
@@ -58,11 +67,16 @@ end
 %    file_row_pairs = file_row_pairs(indvec,:);
 
 % read all batches
+disp('reading all batches')
+fprintf('length(filelist) = %i\n', length(filelist))
 total_samples = length(filelist)*mini_batch_size;
 xz = zeros(total_samples, 2);
 indices = zeros(total_samples, 2);
 vals = zeros(total_samples,num_variables);
 for j = 1:length(filelist)
+    if mod(j,100)==0
+        j
+    end
     start_ind = (j-1)*mini_batch_size+1;
     end_ind = start_ind + mini_batch_size - 1;
     tmpname = [filelist(j).folder, '/', filelist(j).name];
@@ -72,6 +86,7 @@ for j = 1:length(filelist)
 end
 
 % reorder into a random order
+disp('Computing random permutation')
 indvec = randperm(total_samples);
 xz = xz(indvec,:);
 indices = indices(indvec,:);
@@ -82,7 +97,8 @@ if ~exist(output_path, 'dir')
    mkdir(output_path)
 end
 
-for j = 1:length(filelist)
+%for j = 1:length(filelist)
+parfor j = 1:length(filelist)
     disp(sprintf('saving batch # %i',j))
     fname_tmp = sprintf('/batch_%0.5i.hdf',j);
     fname = [output_path, fname_tmp];
