@@ -1,4 +1,4 @@
-function [] = Filter_HTR_BL_data_func(source_file_name, input_path, ...
+function [] = Filter_HTR_BL_data_func(source_file_name, source_iter, source_case_name, input_path, ...
                          output_filtered_data, filtered_out_path, average_flag,...
                          output_training_data, training_out_path, mini_batch_size,...
                          xmin, xmax, npoints, randperm_flag, rus, number_filters,...
@@ -9,6 +9,25 @@ function [] = Filter_HTR_BL_data_func(source_file_name, input_path, ...
 
 
     %% Setup
+
+    % Select specific iter path
+    input_path = sprintf('%s%s/fluid_iter%s/',input_path,source_case_name,source_iter);
+    filtered_out_path = sprintf('%s%s/fluid_iter%s/',filtered_out_path,source_case_name,source_iter);
+    training_out_path = sprintf('%s%s/fluid_iter%s/',training_out_path,source_case_name,source_iter);
+
+    % Make output iter path if doesn't exist
+    if output_filtered_data == 1
+        if ~exist(filtered_out_path, 'dir') 
+           mkdir(filtered_out_path)
+        end
+    end
+
+    if output_training_data == 1
+        if ~exist(training_out_path, 'dir')
+           mkdir(training_out_path)
+        end
+    end
+
 
     % set file names
     fname_in = [ input_path, source_file_name ];

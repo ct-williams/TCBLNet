@@ -7,9 +7,11 @@ clc
 %% File names
 % source_file_name = '513,0,0-1024,257,447.hdf';
 source_file_name = '0,0,0-512,257,447.hdf';
-input_path = '../../data_tar/fluid_iter0000120000/';
+source_iter = '0000120000';
+source_case_name = 'M584_Re15e4_T025';
+input_path = '../../raw_data/';
 
-output_filtered_data = 0; % do you want to output filtered data?
+output_filtered_data = 1; % do you want to output filtered data?
 filtered_out_path ='../../data_filtered/';
 
 average_flag = 0; % is this an average hdf file?
@@ -30,6 +32,24 @@ fil_size = 3.17;
 
 
 %% Setup
+% Select specific iter path
+input_path = sprintf('%s%s/fluid_iter%s/',input_path,source_case_name,source_iter);
+filtered_out_path = sprintf('%s%s/fluid_iter%s/',filtered_out_path,source_case_name,source_iter);
+training_out_path = sprintf('%s%s/fluid_iter%s/',training_out_path,source_case_name,source_iter);
+
+% Make output iter path if doesn't exist
+if output_filtered_data == 1
+    if ~exist(filtered_out_path, 'dir') 
+       mkdir(filtered_out_path)
+    end
+end
+
+if output_training_data == 1
+    if ~exist(training_out_path, 'dir')
+       mkdir(training_out_path)
+    end
+end
+
 
 % set file names
 fname_in = [ input_path, source_file_name ];
