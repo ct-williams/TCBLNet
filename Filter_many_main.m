@@ -6,8 +6,7 @@ close all
 
 %% ======= USER INPUT ==========%%
 % Varables to loop over
-%rus_vec = [2,4,8] ; %ratio of undersampling for each case
-rus_vec = [8] ; %ratio of undersampling for each case
+rus_vec = [2,4,8] ; %ratio of undersampling for each case
 
 % File names
 source_file_name_list = {};
@@ -15,30 +14,277 @@ input_path_list = {};
 source_iter_list = {};
 source_case_name_list = {};
 
-source_file_name_list{end+1} = '0,0,0-512,257,447.hdf';
-source_iter_list{end+1} = '0000120000';
-source_case_name_list{end+1} = 'M584_Re15e4_T025';
+    % M5_Re1e4_T02
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '0,0,0-384,257,511.hdf';
 input_path_list{end+1} = '../../raw_data/';
 
-source_file_name_list{end+1} = '513,0,0-1024,257,447.hdf';
-source_iter_list{end+1} = '0000120000';
-source_case_name_list{end+1} = 'M584_Re15e4_T025';
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '385,0,0-768,257,511.hdf';
 input_path_list{end+1} = '../../raw_data/';
 
-%source_file_name_list{end+1} = '1025,0,0-1536,257,447.hdf';
-%source_iter_list{end+1} = '0000120000';
-%source_case_name_list{end+1} = 'M584_Re15e4_T025';
-%input_path_list{end+1} = '../../raw_data/';
-%
-%source_file_name_list{end+1} = '1537,0,0-2048,257,447.hdf';
-%source_iter_list{end+1} = '0000120000';
-%source_case_name_list{end+1} = 'M584_Re15e4_T025';
-%input_path_list{end+1} = '../../raw_data/';
-%
-%source_file_name_list{end+1} = '2049,0,0-2561,257,447.hdf';
-%source_iter_list{end+1} = '0000120000';
-%source_case_name_list{end+1} = 'M584_Re15e4_T025';
-%input_path_list{end+1} = '../../raw_data/';
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '769,0,0-1152,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '1153,0,0-1536,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '1537,0,0-1920,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '1921,0,0-2304,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '2305,0,0-2688,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '2689,0,0-3072,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '3073,0,0-3456,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re1e4_T02';
+source_iter_list{end+1} =       '0000260000';
+source_file_name_list{end+1} =  '3457,0,0-3841,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+    % M5_Re2e4_T06
+source_case_name_list{end+1} =  'M5_Re2e4_T06';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '0,0,0-512,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re2e4_T06';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '513,0,0-1024,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re2e4_T06';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '1025,0,0-1536,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re2e4_T06';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '1537,0,0-2048,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M5_Re2e4_T06';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '2049,0,0-2561,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+
+    % M584_Re15e4_T025
+source_case_name_list{end+1} =  'M584_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '0,0,0-512,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M584_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '513,0,0-1024,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M584_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '1025,0,0-1536,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M584_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '1537,0,0-2048,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M584_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '2049,0,0-2561,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+    % M6_Re15e4_T025
+source_case_name_list{end+1} =  'M6_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '0,0,0-512,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M6_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '513,0,0-1024,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M6_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '1025,0,0-1536,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M6_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '1537,0,0-2048,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M6_Re15e4_T025';
+source_iter_list{end+1} =       '0000120000';
+source_file_name_list{end+1} =  '2049,0,0-2561,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+
+    % M7_Re1e4_T02
+source_case_name_list{end+1} =  'M7_Re1e4_T02';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '0,0,0-512,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re1e4_T02';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '513,0,0-1024,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re1e4_T02';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '1025,0,0-1536,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re1e4_T02';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '1537,0,0-2048,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re1e4_T02';
+source_iter_list{end+1} =       '0000200000';
+source_file_name_list{end+1} =  '2049,0,0-2561,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+    % M7_Re2e4_T03
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '0,0,0-480,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '481,0,0-960,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '961,0,0-1440,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '1441,0,0-1920,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '1921,0,0-2400,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '2401,0,0-2880,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '2881,0,0-3360,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re2e4_T03';
+source_iter_list{end+1} =       '0000100000';
+source_file_name_list{end+1} =  '3361,0,0-3841,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+
+    % M7_Re15e4_T02
+source_case_name_list{end+1} =  'M7_Re15e4_T02';
+source_iter_list{end+1} =       '0000180000';
+source_file_name_list{end+1} =  '0,0,0-512,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re15e4_T02';
+source_iter_list{end+1} =       '0000180000';
+source_file_name_list{end+1} =  '513,0,0-1024,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re15e4_T02';
+source_iter_list{end+1} =       '0000180000';
+source_file_name_list{end+1} =  '1025,0,0-1536,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re15e4_T02';
+source_iter_list{end+1} =       '0000180000';
+source_file_name_list{end+1} =  '1537,0,0-2048,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M7_Re15e4_T02';
+source_iter_list{end+1} =       '0000180000';
+source_file_name_list{end+1} =  '2049,0,0-2561,257,447.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+    % M11_Re3e4_T03
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '0,0,0-480,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '481,0,0-960,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '961,0,0-1440,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '1441,0,0-1920,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '1921,0,0-2400,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '2401,0,0-2880,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '2881,0,0-3360,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+source_case_name_list{end+1} =  'M11_Re3e4_T03';
+source_iter_list{end+1} =       '0000240000';
+source_file_name_list{end+1} =  '3361,0,0-3841,257,511.hdf';
+input_path_list{end+1} = '../../raw_data/';
+
+
+
+
+
+
 
 
 
