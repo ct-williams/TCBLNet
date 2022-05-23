@@ -7,26 +7,38 @@ close all
 %% ======= USER INPUT ==========%%
 % Varables to loop over
 %rus_vec = [2,4,8] ; %ratio of undersampling for each case
-rus_vec = [4,8] ; %ratio of undersampling for each case
+rus_vec = [8] ; %ratio of undersampling for each case
 
 % File names
 source_file_name_list = {};
 input_path_list = {};
+source_iter_list = {};
+source_case_name_list = {};
 
 source_file_name_list{end+1} = '0,0,0-512,257,447.hdf';
-input_path_list{end+1} = '../../data_tar/fluid_iter0000120000/';
+source_iter_list{end+1} = '0000120000';
+source_case_name_list{end+1} = 'M584_Re15e4_T025';
+input_path_list{end+1} = '../../raw_data/';
 
 source_file_name_list{end+1} = '513,0,0-1024,257,447.hdf';
-input_path_list{end+1} = '../../data_tar/fluid_iter0000120000/';
+source_iter_list{end+1} = '0000120000';
+source_case_name_list{end+1} = 'M584_Re15e4_T025';
+input_path_list{end+1} = '../../raw_data/';
 
 %source_file_name_list{end+1} = '1025,0,0-1536,257,447.hdf';
-%input_path_list{end+1} = '../../data_tar/fluid_iter0000120000/';
+%source_iter_list{end+1} = '0000120000';
+%source_case_name_list{end+1} = 'M584_Re15e4_T025';
+%input_path_list{end+1} = '../../raw_data/';
 %
 %source_file_name_list{end+1} = '1537,0,0-2048,257,447.hdf';
-%input_path_list{end+1} = '../../data_tar/fluid_iter0000120000/';
+%source_iter_list{end+1} = '0000120000';
+%source_case_name_list{end+1} = 'M584_Re15e4_T025';
+%input_path_list{end+1} = '../../raw_data/';
 %
 %source_file_name_list{end+1} = '2049,0,0-2561,257,447.hdf';
-%input_path_list{end+1} = '../../data_tar/fluid_iter0000120000/';
+%source_iter_list{end+1} = '0000120000';
+%source_case_name_list{end+1} = 'M584_Re15e4_T025';
+%input_path_list{end+1} = '../../raw_data/';
 
 
 
@@ -60,11 +72,13 @@ fil_size = 3.17;
 
 % loop through datafiles
 for i = 1:length(source_file_name_list)
-    sprintf('Processing file: %s \n', [input_path_list{i},source_file_name_list{i}])
+    sprintf('Processing file: %s%s/fluid_iter%s/%s \n', input_path_list{i},...
+            source_case_name_list{i}, source_iter_list{i},source_file_name_list{i})
     % loop through rus
     for rus = rus_vec
         sprintf('Using rus = %i', rus)
-        Filter_HTR_BL_data_func(source_file_name_list{i}, input_path_list{i}, ...
+        Filter_HTR_BL_data_func(source_file_name_list{i}, source_iter_list{i},...
+                         source_case_name_list{i}, input_path_list{i}, ...
                          output_filtered_data, filtered_out_path, average_flag,...
                          output_training_data, training_out_path, mini_batch_size,...
                          xmin, xmax, npoints, randperm_flag, rus, number_filters,...
