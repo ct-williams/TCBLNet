@@ -11,7 +11,8 @@ function [] = Filter_HTR_BL_data_func(source_file_name, source_iter, source_case
     %% Setup
 
     % Select specific iter path
-    input_path = sprintf('%s%s/fluid_iter%s/',input_path,source_case_name,source_iter);
+    %input_path = sprintf('%s%s/fluid_iter%s/',input_path,source_case_name,source_iter);
+    input_path = sprintf('%s%s/data/fluid_iter%s/',input_path,source_case_name,source_iter);
     filtered_out_path = sprintf('%s%s/fluid_iter%s/',filtered_out_path,source_case_name,source_iter);
     training_out_path = sprintf('%s%s/fluid_iter%s/',training_out_path,source_case_name,source_iter);
 

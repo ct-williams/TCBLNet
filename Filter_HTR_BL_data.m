@@ -33,7 +33,8 @@ fil_size = 3.17;
 
 %% Setup
 % Select specific iter path
-input_path = sprintf('%s%s/fluid_iter%s/',input_path,source_case_name,source_iter);
+%input_path = sprintf('%s%s/fluid_iter%s/',input_path,source_case_name,source_iter);
+input_path = sprintf('%s%s/data/fluid_iter%s/',input_path,source_case_name,source_iter);
 filtered_out_path = sprintf('%s%s/fluid_iter%s/',filtered_out_path,source_case_name,source_iter);
 training_out_path = sprintf('%s%s/fluid_iter%s/',training_out_path,source_case_name,source_iter);
 
