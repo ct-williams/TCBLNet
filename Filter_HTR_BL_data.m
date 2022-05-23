@@ -5,8 +5,8 @@ clc
 
 
 %% File names
-source_file_name = '513,0,0-1024,257,447.hdf';
 % source_file_name = '513,0,0-1024,257,447.hdf';
+source_file_name = '0,0,0-512,257,447.hdf';
 input_path = '../../data_tar/fluid_iter0000120000/';
 
 output_filtered_data = 0; % do you want to output filtered data?
@@ -14,7 +14,7 @@ filtered_out_path ='../../data_filtered/';
 
 average_flag = 0; % is this an average hdf file?
 
-output_traning_data = 1; % do you want to output training data?
+output_training_data = 1; % do you want to output training data?
 training_out_path = '../../training_data/';
 mini_batch_size = 256;
 xmin = 0.1; % fraction of domain length to ignore at start
@@ -23,7 +23,7 @@ npoints = 5; % number of wall normal points to train on
 randperm_flag = 1; % randomly permute the data to output
 
 %% Filter Parameters
-rus =2 ; %ratio of undersampling
+rus =4 ; %ratio of undersampling
 number_filters = 5;
 number_filters_us = 4;
 fil_size = 3.17;
@@ -380,7 +380,7 @@ disp('Computed outputs')
 % return
 
 %% old saving Save in format ready for training
-if output_traning_data == 1
+if output_training_data == 1
     % make directory for saving the files
     tmpstr=sprintf('_randperm%i',randperm_flag);
     training_folder_name = [filtered_file_name(1:end-4),tmpstr,'_training'];
@@ -391,7 +391,7 @@ if output_traning_data == 1
     nxtrain = xind_end - xind_start + 1;
     
     n_train_total = nz*nxtrain;
-    nbatches = int32(floor(n_train_total/mini_batch_size));
+    nbatches = int32(floor(double(n_train_total)/mini_batch_size));
 
     % Loop through all the mini_batches
 %    jtmp = 1; %xind_start;
