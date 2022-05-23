@@ -9,6 +9,7 @@ source_file_name = '513,0,0-1024,257,447.hdf';
 % source_file_name = '513,0,0-1024,257,447.hdf';
 input_path = '../../data_tar/fluid_iter0000120000/';
 
+output_filtered_data = 0; % do you want to output filtered data?
 filtered_out_path ='../../data_filtered/';
 
 average_flag = 0; % is this an average hdf file?
@@ -22,7 +23,7 @@ npoints = 5; % number of wall normal points to train on
 randperm_flag = 1; % randomly permute the data to output
 
 %% Filter Parameters
-rus =8 ; %ratio of undersampling
+rus =2 ; %ratio of undersampling
 number_filters = 5;
 number_filters_us = 4;
 fil_size = 3.17;
@@ -253,96 +254,98 @@ TmTw_TemTw = (Tf - T(1,1,1))./(1 - T(1,1,1));
 
 %% Saving 
 
-% Save full filtered field
-% create file
-fileID = H5F.create(fname_out,'H5F_ACC_TRUNC','H5P_DEFAULT','H5P_DEFAULT');
+if output_filtered_data == 1;
+    % Save full filtered field
+    % create file
+    fileID = H5F.create(fname_out,'H5F_ACC_TRUNC','H5P_DEFAULT','H5P_DEFAULT');
 
-% Write info parameters
-h5writeatt(fname_out,'/','Source file name', fname_in);
-h5writeatt(fname_out,'/','Ratio of undersampling, rus', rus);
-h5writeatt(fname_out,'/','number_filters', number_filters);
-h5writeatt(fname_out,'/','number_filters_us', number_filters_us);
-h5writeatt(fname_out,'/','fil_size', fil_size);
+    % Write info parameters
+    h5writeatt(fname_out,'/','Source file name', fname_in);
+    h5writeatt(fname_out,'/','Ratio of undersampling, rus', rus);
+    h5writeatt(fname_out,'/','number_filters', number_filters);
+    h5writeatt(fname_out,'/','number_filters_us', number_filters_us);
+    h5writeatt(fname_out,'/','fil_size', fil_size);
 
-% Write some data
-    % coordinates
-h5create(fname_out,'/centerCoordinates_x',[nx,ny,nz]);
-h5write(fname_out, '/centerCoordinates_x', squeeze(xyz(1,:,:,:)));
-h5create(fname_out,'/centerCoordinates_y',[nx,ny,nz]);
-h5write(fname_out, '/centerCoordinates_y', squeeze(xyz(2,:,:,:)));
-h5create(fname_out,'/centerCoordinates_z',[nx,ny,nz]);
-h5write(fname_out, '/centerCoordinates_z', squeeze(xyz(3,:,:,:)));
+    % Write some data
+        % coordinates
+    h5create(fname_out,'/centerCoordinates_x',[nx,ny,nz]);
+    h5write(fname_out, '/centerCoordinates_x', squeeze(xyz(1,:,:,:)));
+    h5create(fname_out,'/centerCoordinates_y',[nx,ny,nz]);
+    h5write(fname_out, '/centerCoordinates_y', squeeze(xyz(2,:,:,:)));
+    h5create(fname_out,'/centerCoordinates_z',[nx,ny,nz]);
+    h5write(fname_out, '/centerCoordinates_z', squeeze(xyz(3,:,:,:)));
 
-    % Pressure
-h5create(fname_out,'/pressure',[nx,ny,nz]);
-h5write(fname_out, '/pressure', Pf);
+        % Pressure
+    h5create(fname_out,'/pressure',[nx,ny,nz]);
+    h5write(fname_out, '/pressure', Pf);
 
-    % rho
-h5create(fname_out,'/rho',[nx,ny,nz]);
-h5write(fname_out, '/rho', rhof);
+        % rho
+    h5create(fname_out,'/rho',[nx,ny,nz]);
+    h5write(fname_out, '/rho', rhof);
 
-    % Temperature
-h5create(fname_out,'/temperature',[nx,ny,nz]);
-h5write(fname_out, '/temperature', Tf);
+        % Temperature
+    h5create(fname_out,'/temperature',[nx,ny,nz]);
+    h5write(fname_out, '/temperature', Tf);
 
-    % Velocity
-h5create(fname_out,'/velocity_x',[nx,ny,nz]);
-h5write(fname_out, '/velocity_x', Uf);
-h5create(fname_out,'/velocity_y',[nx,ny,nz]);
-h5write(fname_out, '/velocity_y', Vf);
-h5create(fname_out,'/velocity_z',[nx,ny,nz]);
-h5write(fname_out, '/velocity_z', Wf);
+        % Velocity
+    h5create(fname_out,'/velocity_x',[nx,ny,nz]);
+    h5write(fname_out, '/velocity_x', Uf);
+    h5create(fname_out,'/velocity_y',[nx,ny,nz]);
+    h5write(fname_out, '/velocity_y', Vf);
+    h5create(fname_out,'/velocity_z',[nx,ny,nz]);
+    h5write(fname_out, '/velocity_z', Wf);
 
-    % Sound speed
-h5create(fname_out,'/soundspeed',[nx,ny,nz]);
-h5write(fname_out, '/soundspeed', af);
-    
-    % mu
-h5create(fname_out,'/mu',[nx,ny,nz]);
-h5write(fname_out, '/mu', mu);
+        % Sound speed
+    h5create(fname_out,'/soundspeed',[nx,ny,nz]);
+    h5write(fname_out, '/soundspeed', af);
+        
+        % mu
+    h5create(fname_out,'/mu',[nx,ny,nz]);
+    h5write(fname_out, '/mu', mu);
 
 
 
-    % Velocity Derivatives
-for i = 1:3
-    for j = 1:3
-        dataname = sprintf('/du%idx%i',i,j);
-        h5create(fname_out,dataname,[nx,ny,nz]);
-        h5write(fname_out, dataname, duidxj(:,:,:,i,j));
+        % Velocity Derivatives
+    for i = 1:3
+        for j = 1:3
+            dataname = sprintf('/du%idx%i',i,j);
+            h5create(fname_out,dataname,[nx,ny,nz]);
+            h5write(fname_out, dataname, duidxj(:,:,:,i,j));
+        end
     end
-end
 
-for i = 1:3
+    for i = 1:3
+        for j = 1:6
+            dataname = sprintf('/d2u(%i)dxidxj(%i)',i,j);
+            h5create(fname_out,dataname,[nx,ny,nz]);
+            h5write(fname_out, dataname, d2uidxjdxk(:,:,:,i,j));
+        end
+    end
+
+        % Temeprature Derivatives
+    for i = 1:3
+        dataname = sprintf('/dTdx%i',i);
+        h5create(fname_out,dataname,[nx,ny,nz]);
+        h5write(fname_out, dataname, dTdxi(:,:,:,i));
+    end
+
     for j = 1:6
-        dataname = sprintf('/d2u(%i)dxidxj(%i)',i,j);
+        dataname = sprintf('/d2Tdxidxj(%i)',j);
         h5create(fname_out,dataname,[nx,ny,nz]);
-        h5write(fname_out, dataname, d2uidxjdxk(:,:,:,i,j));
+        h5write(fname_out, dataname, d2Tdxjdxk(:,:,:,j));
     end
+
+    % Close the hdf5 file
+    H5F.close(fileID) 
+
+
+    % fileID = H5F.create(fname_out,'H5F_ACC_TRUNC','H5P_DEFAULT','H5P_DEFAULT');
+    % type_id = H5T.array_create('H5T_ARRAY',3,[nx,ny,nz]);
+    % H5T.insert(type_id,'xyz',12,'H5T_NATIVE_DOUBLE');
+    % h5create(fname_out,'/centerCooridinates',[nx,ny,nz])
+
+    disp('saved filtered field')
 end
-
-    % Temeprature Derivatives
-for i = 1:3
-    dataname = sprintf('/dTdx%i',i);
-    h5create(fname_out,dataname,[nx,ny,nz]);
-    h5write(fname_out, dataname, dTdxi(:,:,:,i));
-end
-
-for j = 1:6
-    dataname = sprintf('/d2Tdxidxj(%i)',j);
-    h5create(fname_out,dataname,[nx,ny,nz]);
-    h5write(fname_out, dataname, d2Tdxjdxk(:,:,:,j));
-end
-
-% Close the hdf5 file
-H5F.close(fileID) 
-
-
-% fileID = H5F.create(fname_out,'H5F_ACC_TRUNC','H5P_DEFAULT','H5P_DEFAULT');
-% type_id = H5T.array_create('H5T_ARRAY',3,[nx,ny,nz]);
-% H5T.insert(type_id,'xyz',12,'H5T_NATIVE_DOUBLE');
-% h5create(fname_out,'/centerCooridinates',[nx,ny,nz])
-
-disp('saved filtered field')
 
 
 %% Compute outputs
@@ -391,14 +394,29 @@ if output_traning_data == 1
     nbatches = int32(floor(n_train_total/mini_batch_size));
 
     % Loop through all the mini_batches
-    jtmp = 1; %xind_start;
-    ktmp = 1;
-    % randomly permute data
-    j_randperm = xind_start:xind_end;
-    k_randperm = 1:nz;
+%    jtmp = 1; %xind_start;
+%    ktmp = 1;
+%    % randomly permute data
+%    j_randperm = xind_start:xind_end;
+%    k_randperm = 1:nz;
+%    if randperm_flag == 1
+%        j_randperm = j_randperm(randperm(nxtrain));
+%        k_randperm = k_randperm(randperm(nz));
+%    end
+    
+    % Generate randomized list of index pairs (i,k)
+    ik_pairs = zeros(n_train_total,2);
+    tmpind = 0;
+    for i = xind_start:xind_end
+        for k = 1:nz
+            tmpind = tmpind + 1;
+            ik_pairs(tmpind,:) = [i, k];
+        end
+    end
+
     if randperm_flag == 1
-        j_randperm = j_randperm(randperm(nxtrain));
-        k_randperm = k_randperm(randperm(nz));
+        indvec = randperm(n_train_total);
+        ik_pairs = ik_pairs(indvec,:);
     end
 
     for i = 1:nbatches
@@ -450,73 +468,63 @@ if output_traning_data == 1
                               'dTdxi(1:n)[(1),(2),(3)], ',...
                               'd2Tdxjdxk(1:n)[(1,1),(2,2),(3,3),(2,1),(3,1),(2,3)].']...
                                , 0);
-                
 
         % Write some data
+        % Initialize the datasets in the hdf file
         h5create(fname,'/data',[mini_batch_size,ninputs+noutputs]);
         h5create(fname,'/indices',[mini_batch_size,2]);
         h5create(fname,'/xz_coords',[mini_batch_size,2]);
-        ind = 0;
 
-        batch_done = 0;
-        for jind = jtmp:nxtrain
-            j = j_randperm(jind);
+        % Assemble the training data
+        batch_mat = zeros(mini_batch_size,ninputs+noutputs);
+        batch_start = (i-1)*mini_batch_size;
+        for j = 1:mini_batch_size
+            ii = ik_pairs(batch_start+j,1);
+            kk = ik_pairs(batch_start+j,2);
 
-            if jind > jtmp
-                ktmp = 1;
+            % Construct a training instance
+            row = [ tau_wall(ii,kk), heatflux_wall(ii,kk),...   
+                  y(1:npoints)', Uf(ii,1:npoints,kk), Vf(ii,1:npoints,kk), ...
+                  Wf(ii,1:npoints,kk), Pf(ii,1:npoints,kk), ...
+                  rhof(ii,1:npoints,kk), Tf(ii,1:npoints,kk),...
+                  af(ii,1:npoints,kk), mu(ii,1:npoints,kk), kappa(ii,1:npoints,kk),...
+                  Re(ii,1:npoints,kk), TmTw_TemTw(ii,1:npoints,kk)];
+            for l = 1:3
+                for m = 1:3
+                    row = [row, duidxj(ii,1:npoints,kk,l,m)];
+                end
             end
             
-            for kind = ktmp:nz
-                k = k_randperm(kind);
-
-                ind = ind + 1;
-                if ind > mini_batch_size
-                    jtmp = jind;
-                    ktmp = kind;
-                    batch_done = 1;
-                    break
-                end
-                
-                row = [ tau_wall(j,k), heatflux_wall(j,k),...   
-                      y(1:npoints)', Uf(j,1:npoints,k), Vf(j,1:npoints,k), ...
-                      Wf(j,1:npoints,k), Pf(j,1:npoints,k), ...
-                      rhof(j,1:npoints,k), Tf(j,1:npoints,k),...
-                      af(j,1:npoints,k), mu(j,1:npoints,k), kappa(j,1:npoints,k),...
-                      Re(j,1:npoints,k), TmTw_TemTw(j,1:npoints,k)];
-                for l = 1:3
-                    for m = 1:3
-                        row = [row, duidxj(j,1:npoints,k,l,m)];
-                    end
-                end
-                
-                for l = 1:3
-                    for m = 1:6
-                        row = [row, d2uidxjdxk(j,1:npoints,k,l,m)];
-                    end
-                end
-
-                for l = 1:3
-                    row = [row, dTdxi(j,1:npoints,k,l)];
-                end
-                
+            for l = 1:3
                 for m = 1:6
-                    row = [row, d2Tdxjdxk(j,1:npoints,k,m)];
+                    row = [row, d2uidxjdxk(ii,1:npoints,kk,l,m)];
                 end
-                            
-                if size(row) ~= ninputs+noutputs
-                    disp('ERROR, row size wrong!!!!!')
-                    pause
-                end
+            end
 
-                h5write(fname, '/data',row,[ind,1],[1,ninputs+noutputs]);
-                h5write(fname, '/indices',[j,k],[ind,1],[1,2]);
-                h5write(fname, '/xz_coords',[x(j),z(k)],[ind,1],[1,2]);
+            for l = 1:3
+                row = [row, dTdxi(ii,1:npoints,kk,l)];
             end
             
-            if batch_done == 1
-                break
+            for m = 1:6
+                row = [row, d2Tdxjdxk(ii,1:npoints,kk,m)];
             end
+                        
+            if size(row) ~= ninputs+noutputs
+                disp('ERROR, row size wrong!!!!!')
+                pause
+            end
+
+            % add it to the matrix that we will write
+            batch_mat(j,:) = row;
         end
+
+        % write the batch
+        h5write(fname, '/data',batch_mat,[1,1],[mini_batch_size,ninputs+noutputs]);
+        batch_indices = ik_pairs(batch_start+1:batch_start+mini_batch_size,:);
+        h5write(fname, '/indices',batch_indices,[1,1],[mini_batch_size,2]);
+        xtmp = reshape(x(batch_indices(:,1)),mini_batch_size,1);
+        ztmp = reshape(z(batch_indices(:,2)),mini_batch_size,1);
+        h5write(fname, '/xz_coords',[xtmp,ztmp],[1,1],[mini_batch_size,2]);
 
         % Close the hdf5 file
         H5F.close(fileID) 
@@ -535,16 +543,28 @@ figure
 hold on
 vals = [];
 xz = [];
-for i = 1:11
+indices = [];
+for i = 4:7
     tmpname = sprintf('./batch_%0.5i.hdf',i);
     xz = [xz; h5read(tmpname,'/xz_coords')];
+    indices = [indices; h5read(tmpname,'/indices')];
     vals = [vals; h5read(tmpname,'/data')];
 end
 [xq,yq] = meshgrid(x, z); % interpolation points grid
-% vq = griddata(xz(:,1),xz(:,2),vals(:,9),xq,yq,'natural'); %U
-    vq = griddata(xz(:,1),xz(:,2),vals(:,2),xq,yq,'natural');
+vq = griddata(xz(:,1),xz(:,2),vals(:,9),xq,yq,'natural'); %U
+%     vq = griddata(xz(:,1),xz(:,2),vals(:,2),xq,yq,'natural');
 Z = squeeze(vq);
 contourf(xq,yq,Z);
+
+figure;
+plot(xz(:,1),xz(:,2),'x')
+
+figure;
+plot(indices(:,1),indices(:,2),'x')
+
+figure;
+contourf(squeeze(xyz(1,:,1,:)), squeeze(xyz(3,:,1,:)), squeeze(Uf(:,2,:)));
+% contourf(squeeze(xyz(1,:,1,:)), squeeze(xyz(3,:,1,:)), heatflux_wall);
 
 
 
