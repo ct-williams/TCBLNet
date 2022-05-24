@@ -18,7 +18,16 @@ noutputs = 2; %number of outputs used
 npoints = 5; % number of wall normal points used
     %-----
 
-output_path = '../../training_data/test_selection_1';
+    %---- data to ignore
+    % the script will ignore all paths that contain the 
+    % selected strings.
+ignore_str_list = {};
+% ignore_str_list{end+1} = '_rus2';
+% ignore_str_list{end+1} = '_rus4';
+% ignore_str_list{end+1} = '_rus8';
+    %----
+
+output_path = '../../training_data/all_data';
 
 % Cases to use
 % It is recursive, so it will enter all subdirectories
@@ -27,12 +36,14 @@ output_path = '../../training_data/test_selection_1';
 % these are the paths on top of the data_location path
 
 %training?
-%data_path_list{end+1} = 'M584_Re15e4_T025';
-%data_path_list{end+1} = 'M5_Re1e4_T02';
-%data_path_list{end+1} = 'M5_Re2e4_T06';
-%data_path_list{end+1} = 'M7_Re2e4_T03';
+data_path_list{end+1} = 'M584_Re15e4_T025';
+data_path_list{end+1} = 'M5_Re1e4_T02';
+data_path_list{end+1} = 'M5_Re2e4_T06';
+data_path_list{end+1} = 'M7_Re1e4_T02';
+data_path_list{end+1} = 'M7_Re2e4_T03';
 
 %test?
+data_path_list{end+1} = 'M6_Re15e4_T025';
 data_path_list{end+1} = 'M7_Re15e4_T02';
 data_path_list{end+1} = 'M11_Re3e4_T03';
 
@@ -49,6 +60,10 @@ for i = 1:length(data_path_list)
     filelist_tmp = dir(fullfile(rootdir, '**/*.*'));  %get list of files and folders in any subfolder
     filelist_tmp = filelist_tmp(~[filelist_tmp.isdir]);  %remove folders from list
     filelist_tmp = filelist_tmp(contains({filelist_tmp(:).name}, 'batch_')); % select only batch files
+
+    for j = 1:length(ignore_str_list)
+        filelist_tmp = filelist_tmp(~[contains({filelist_tmp(:).folder}, ignore_str_list{j})]);
+    end
 
     filelist = [filelist; filelist_tmp];
 end
@@ -97,7 +112,7 @@ if ~exist(output_path, 'dir')
    mkdir(output_path)
 end
 
-%for j = 1:length(filelist)
+% for j = 1:length(filelist)
 parfor j = 1:length(filelist)
     disp(sprintf('saving batch # %i',j))
     fname_tmp = sprintf('/batch_%0.5i.hdf',j);
@@ -107,6 +122,7 @@ parfor j = 1:length(filelist)
 
     % Write info parameters
     h5writeatt(fname,'/','Source file name', ['Combination: ', [data_path_list{:}] ]);
+    h5writeatt(fname,'/','Strings ignored', [ignore_str_list{:}]);
 %        h5writeatt(fname,'/','Ratio of undersampling, rus', 0);
 %        h5writeatt(fname,'/','number_filters', 0);
 %        h5writeatt(fname,'/','number_filters_us', 0);
