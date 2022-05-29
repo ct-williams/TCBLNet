@@ -85,6 +85,7 @@ batch_size = 1024 #512 #256
 train_dir = "../../training_data/training_selection_2_onebatch/"
 
 #### Read data ###
+print('loading data')
 batch = 1
 filename = train_dir+"batch_"+ str(batch).zfill(5) + ".hdf"
 f = h5py.File(filename, 'r')
