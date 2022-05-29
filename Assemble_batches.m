@@ -12,6 +12,7 @@ data_location = '../../training_data/';
 
     %---- All of these must be the same for all batches.
 mini_batch_size = 256;
+write_one_batch = 1; % write all in one batch file?
 num_variables = 242; % (including outputs and features)
     % thes ones are just used for documentation
 noutputs = 2; %number of outputs used
@@ -27,7 +28,7 @@ ignore_str_list = {};
 % ignore_str_list{end+1} = '_rus8';
     %----
 
-output_path = '../../training_data/all_data';
+output_path = '../../training_data/test_selection_2_onebatch';
 
 % Cases to use
 % It is recursive, so it will enter all subdirectories
@@ -36,11 +37,11 @@ output_path = '../../training_data/all_data';
 % these are the paths on top of the data_location path
 
 %training?
-data_path_list{end+1} = 'M584_Re15e4_T025';
-data_path_list{end+1} = 'M5_Re1e4_T02';
-data_path_list{end+1} = 'M5_Re2e4_T06';
-data_path_list{end+1} = 'M7_Re1e4_T02';
-data_path_list{end+1} = 'M7_Re2e4_T03';
+% data_path_list{end+1} = 'M584_Re15e4_T025';
+% data_path_list{end+1} = 'M5_Re1e4_T02';
+% data_path_list{end+1} = 'M5_Re2e4_T06';
+% data_path_list{end+1} = 'M7_Re1e4_T02';
+% data_path_list{end+1} = 'M7_Re2e4_T03';
 
 %test?
 data_path_list{end+1} = 'M6_Re15e4_T025';
@@ -112,8 +113,16 @@ if ~exist(output_path, 'dir')
    mkdir(output_path)
 end
 
-% for j = 1:length(filelist)
-parfor j = 1:length(filelist)
+% write all data in one batch if wanted
+if write_one_batch == 1
+    mini_batch_size = total_samples;
+    jmax = 1;
+else
+    jmax = length(filelist);
+end
+
+for j = 1:jmax
+% parfor j = 1:jmax
     disp(sprintf('saving batch # %i',j))
     fname_tmp = sprintf('/batch_%0.5i.hdf',j);
     fname = [output_path, fname_tmp];
